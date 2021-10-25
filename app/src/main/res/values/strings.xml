@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">TailNode</string>
+    <string name="sign_in">Sign In</string>
+    <string name="user_location">Location</string>
+    <string name="location_permission">Location permission is required for this feature to work. Kindly enable this from settings.</string>
+    <string name="view_location">View Location</string>
+</resources>
