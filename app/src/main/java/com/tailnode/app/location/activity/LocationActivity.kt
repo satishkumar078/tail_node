@@ -12,6 +12,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.os.Looper
+import android.provider.Settings
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.IntentSenderRequest
@@ -26,6 +27,7 @@ import com.tailnode.R
 import com.tailnode.app.splash.activity.SplashActivity
 import com.tailnode.app.store.PrefsStore
 import com.tailnode.databinding.ActivityLocationBinding
+import com.tailnode.utils.ToastDialog
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileWriter
@@ -112,6 +114,7 @@ class LocationActivity : AppCompatActivity(){
     private lateinit var binding: ActivityLocationBinding
 
     private fun anyLocationPermissionsGranted() = REQUIRED_PERMISSIONS.all {
+        Log.e(TAG, "$it condition: ${ContextCompat.checkSelfPermission(this, it) == PackageManager.PERMISSION_GRANTED}")
         ContextCompat.checkSelfPermission(this, it) == PackageManager.PERMISSION_GRANTED
     }
 
@@ -139,9 +142,14 @@ class LocationActivity : AppCompatActivity(){
         binding.tvViewLocation.setOnClickListener {
             val path = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
             val file = File("$path/location.txt")
+
+            if (!file.exists()) {
+                ToastDialog(context = this, msg = "No location file found").show()
+                return@setOnClickListener
+            }
             val uri: Uri = FileProvider.getUriForFile(this, "$packageName.provider", file)
             val intent = Intent(Intent.ACTION_VIEW)
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             intent.data = uri
             startActivity(intent)
         }

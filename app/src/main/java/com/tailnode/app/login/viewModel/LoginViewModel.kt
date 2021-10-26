@@ -11,7 +11,7 @@ class LoginViewModel : ViewModel() {
 
     fun isMobileValid(): Boolean {
         val mobile = mobile.get()?:""
-        return mobile.isNotEmpty() && Patterns.PHONE.matcher(mobile).matches()
+        return mobile.length == 10 && Patterns.PHONE.matcher(mobile).matches()
     }
 
     fun isNameValid() : Boolean {

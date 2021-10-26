@@ -2,13 +2,14 @@ package com.tailnode.app.splash.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import com.tailnode.app.location.activity.LocationActivity
 import com.tailnode.app.login.activity.LoginActivity
 import com.tailnode.app.store.AppState
 import com.tailnode.app.store.PrefsStore
 import com.tailnode.databinding.ActivitySplashBinding
-import com.tailnode.utils.Constants
 import kotlin.reflect.KClass
 
 class SplashActivity : AppCompatActivity() {
@@ -27,8 +28,10 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun launchActivity(cls: KClass<*>) {
-        val intent = Intent(this, cls.java)
-        startActivity(intent)
-        supportFinishAfterTransition()
+        Handler(Looper.getMainLooper()).postAtTime({
+            val intent = Intent(this, cls.java)
+            startActivity(intent)
+            supportFinishAfterTransition()
+        }, 1000)
     }
 }
